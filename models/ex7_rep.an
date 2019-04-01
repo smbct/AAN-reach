@@ -1,0 +1,21 @@
+(**
+    exemple où une transition est empruntée plusieurs fois
+**)
+
+"a" [0,1,2,3]
+"b" [0,1]
+"c" [0,1]
+"d" [0,1]
+
+"a" 0 -> 1 when "b"=1
+"a" 1 -> 2 when "b"=1 and "c"=1
+"a" 2 -> 3 when "b"=1 and "d"=1
+
+"b" 0 -> 1
+"b" 1 -> 0
+
+"c" 0 -> 1 when "a"=1 and "b"=0
+
+"d" 0 -> 1 when "a"=2 and "b"=0
+
+initial_context "a" = 0 , "b" = 0 , "c" = 0, "d" = 0
