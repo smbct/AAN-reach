@@ -46,8 +46,6 @@ void Parameters::loadFromCmd(int argc, char** argv) {
       extractContext(argv[i+1], initialState);
     } else if(token == "-g") {
       extractContext(argv[i+1], goal);
-    } else if(token == "-h") {
-      showHelp();
     } else if(token == "-d") {
       debugLevel = stoi(argv[i+1]);
     } else if(token == "-s") {
@@ -168,4 +166,5 @@ void Parameters::showHelp() {
   cout << "-i : initial local state, ex: \"a=0, b=1, c=0\"" << endl;
   cout << "-g : goal state, ex: \"a=2\"" << endl;
   cout << "-s : sat solver: minisat, glucose" << endl << endl;
+  cout << "-d : debug information level, between 0 and 2" << endl;
 }

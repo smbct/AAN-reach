@@ -41,8 +41,6 @@ void Graph::build() {
     /* add the goal local state */
     _root = new VLocalState(this, _goalState.automaton, _goalState.state);
 
-    cout << "root: " << _root->toString() << endl;
-
     bool change = false;
 
     /* build the graph until a fixed point is found */
@@ -58,20 +56,6 @@ void Graph::build() {
         change = change || re_centering();
 
     } while(change);
-
-    cout << "n local states: " << _vlocalStates.size() << endl;
-    cout << "n obj: " << _vobjectives.size() << endl;
-
-    bool cycle = checkCycle();
-    cout << "cycle ? " << cycle << endl;
-
-    if(!cycle) {
-      std::vector<int> statut(_vertices.size(), 0);
-      std::vector<int> bounds(_vertices.size(), -1);
-      computeBound(_root, statut, bounds);
-
-      cout << "Reachability bound: " << bounds.at(_root->index) << endl;
-    }
 
 }
 

@@ -290,7 +290,6 @@ bool Encoding::reachability(Context& initCtx, Context& finalCtx, int length) {
     }
 
     // cmd += " -cpu-lim=1";
-
     // cmd += " --help";
 
     if(param.solver != Parameters::ccanr) {
@@ -459,9 +458,6 @@ bool Encoding::extractSolution(vector<StateVar>& stateVar, vector<cnf::Variable*
             }
 
         }
-
-        cout << "maxOcc : " << maxOcc << endl;
-        // some occ are 2, just reduce the length k -> 1
 
     }
 
