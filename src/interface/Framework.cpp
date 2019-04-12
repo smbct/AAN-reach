@@ -32,7 +32,6 @@ void Framework::exec() {
 
   Parameters& param = Parameters::getParameters();
 
-
   if(param.help) { /* show the help */
     param.showHelp();
   } else { /* lunch the reachability solver */
@@ -60,8 +59,6 @@ void Framework::reachability() {
       exit(0);
     }
 
-
-
     /* identification of the goal state */
     LocalState goal;
     {
@@ -75,7 +72,6 @@ void Framework::reachability() {
     /* creation of the final context */
     Context finalCtx(model.nAutomata(),-1);
     finalCtx.at(goal.automaton) = goal.state;
-
 
     /* Creation of the initial context */
     Context initCtx = model.initialContext();
@@ -99,14 +95,14 @@ void Framework::reachability() {
 
       unsigned int bound = lcg.computeBound();
 
-      cout << "bound computed: " << bound << " states" << endl;
+      cout << "Local causality bound: " << bound << " state(s)" << endl;
 
       // if(param.encoding == Parameters::SAT) {
       Encoding en(model);
       if(param.debugLevel >= 1) {
         en.setVerbose(true);
       }
-      reachable = en.reachability(initCtx, finalCtx, bound+1);
+      reachable = en.reachability(initCtx, finalCtx, bound);
       // } else if(param.encoding == Parameters::ASP) {
       //   ASP aspEnc(model);
       //   reachable = aspEnc.reachability(initCtx, finalCtx, bound+1);

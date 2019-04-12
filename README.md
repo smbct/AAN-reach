@@ -27,6 +27,7 @@ First, make the install script executable: sudo chmod +x install.sh. Then, use t
 - -m: Automata Network model path (.an file)
 - -i: initial state, for example "a=0,b=0,c=0"
 - -g: reachability goal, for example "a=3"
+- -d: debug level, between 0 and 2
 - -h: show the help
 
 ### Example

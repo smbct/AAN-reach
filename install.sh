@@ -8,6 +8,8 @@ echo "........................."
 # sudo apt install curl
 # sudo apt install zlib1g-dev
 
+mkdir solver
+
 curl -sS http://minisat.se/downloads/minisat-2.2.0.tar.gz > solver/minisat.tar.gz
 cd solver
 tar -xvzf minisat.tar.gz
