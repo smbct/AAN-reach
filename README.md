@@ -4,9 +4,22 @@ AAN-reach is a reachability solver the Asynchronous Automata Network framework. 
 
 ## How to use it ?
 
+### Operating system
+
+This program has been successfully tested on Ubuntu 18.04.2 LTS.
+
+### Dependencies
+
+The program can use two SAT solvers:
+
+- [minisat](http://minisat.se/MiniSat.html)
+- [glucose](http://www.labri.fr/perso/lsimon/glucose/)
+
+These solvers are installed automatically with the installing script. However, you may need the packages **curl** and **zlib1g-dev** (can be installed with the command: sudo apt install "package")
+
 ### Installation
 
-curl is needed.
+First, make the install script executable: sudo chmod +x install.sh. Then, use the command: ./install to download the SAT solvers and compile the program.
 
 ### List of parameters
 
@@ -14,15 +27,21 @@ curl is needed.
 - -m: Automata Network model path (.an file)
 - -i: initial state, for example "a=0,b=0,c=0"
 - -g: reachability goal, for example "a=3"
+- -h: show the help
 
 ### Example
 
-./aan_reach -e SAT -m "models/ex7_rep.an" -i "a=0,b=0,c=0,d=0" -g "a=3"
+For example, here is a reachable instance:
 
+./aan_reach -s minisat -m "models/ex7_rep.an" -i "a=0,b=0,c=0,d=0" -g "a=3"
+
+### Documentation
+
+A documentation of the source code can be generated thanks to [Doxygen](http://doxygen.nl/). To generate the documentation, Doxygen must be installed. Then, use the command: doxygen Doxyfile
 
 ## Asynchronous Automata Network
 
-Asynchronous Automata Networks is a modeling framework used to represent dynamic systems, such as biological regulatory networks. These models are composed by several automata. Each automaton has several local states and transitions between these local states. The set of (global) states of the model is the cross product of all the local states of the automata. Transitions are also labeled by some local states. A transition can be played from a (global state) if the local states of the transition are present in this state. The Asynchronicity means that from one global state, only one transition can be played.
+Asynchronous Automata Networks is a modeling framework used to represent dynamic systems, such as biological regulatory networks. These models are composed by several automata. Each automaton has several local states and transitions between these local states. The set of (global) states of the model is the cross product of all the local states of the automata. Transitions are also labeled by some local states. A transition can be played from a (global state) if the local states of the transition are present in this state. The Asynchronicity means that from one global state, only one transition can be played. A description of the format can be found [here](https://loicpauleve.name/pint/doc/automata-networks.html).
 
 ![An Automata Network](AN.png)
 

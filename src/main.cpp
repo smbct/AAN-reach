@@ -11,7 +11,7 @@ using namespace std;
 
 /*----------------------------------------------------------------------------*/
 int main(int argc, char** argv) {
-  
+
     Parameters& param = Parameters::getParameters();
 
     param.loadFromCmd(argc, argv);
@@ -27,6 +27,8 @@ int main(int argc, char** argv) {
     // ./main -e SAT -s glucose -m "models/ex7_rep.an" -i "a=0,b=0,c=0,d=0" -g "a=3"
 
     // ./main -e SAT -s glucose -m "models/ex7_rep.an" -i "a=0,b=0,c=0,d=0" -g "a=3"
+
+    // ./aan_reach -s glucose -m "models/ex7_rep.an" -i "a=0,b=0,c=0,d=0" -g "a=3" -h
 
 
     return 0;

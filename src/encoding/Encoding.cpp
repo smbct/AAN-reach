@@ -272,15 +272,21 @@ bool Encoding::reachability(Context& initCtx, Context& finalCtx, int length) {
     /* command for calling SAT solver */
     string cmd;
 
-    /* minisat */
+    // if(param.solver == Parameters::glucose) {
+    //   cmd = "./solver/glucose-syrup-4.1/simp/glucose_static";
+    // } else if(param.solver == Parameters::minisat) {
+    //   cmd = "./solver/minisat/core/minisat_static";
+    // } else if(param.solver == Parameters::ccanr) {
+    //   cmd = "./solver/CCAnr_2_cai_source_code/CCAnr";
+    // } else { /* minisat anyway */
+    //   cmd = "./solver/minisat/core/minisat_static";
+    // }
+
+    /* solver choice */
     if(param.solver == Parameters::glucose) {
-      cmd = "./../solver/glucose-syrup-4.1/simp/glucose_static";
-    } else if(param.solver == Parameters::minisat) {
-      cmd = "./../solver/minisat/core/minisat_static";
-    } else if(param.solver == Parameters::ccanr) {
-      cmd = "./../solver/CCAnr_2_cai_source_code/CCAnr";
+      cmd = "./solver/glucose-syrup-4.1/simp/glucose_static";
     } else { /* minisat anyway */
-      cmd = "./../solver/minisat/core/minisat_static";
+      cmd = "./solver/minisat/core/minisat";
     }
 
     // cmd += " -cpu-lim=1";

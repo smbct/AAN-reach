@@ -12,7 +12,7 @@ CXXFLAGS := -std=c++11
 all: aan_reach
 
 run: aan_reach
-	./aan_reach
+	./aan_reach -h
 
 #main: $(OBJ_FILES)
 #	$(CXX) $(LDFLAGS) -o $@ $^
