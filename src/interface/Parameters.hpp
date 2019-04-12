@@ -63,6 +63,7 @@ class Parameters {
     StrContext goal; /* the goal of the rechability problem */
     int debugLevel; /* level for debuging information */
     bool help; /* show the help */
+    int bound; /* bound of the reachability sequence */
 
   private:
 
