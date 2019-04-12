@@ -30,11 +30,20 @@ First, make the install script executable: sudo chmod +x install.sh. Then, use t
 - -d: debug level, between 0 and 2
 - -h: show the help
 
-### Example
+### Examples
 
-For example, here is a reachable instance:
+The two following instances are reachable:
 
-./aan_reach -s minisat -m "models/ex7_rep.an" -i "a=0,b=0,c=0,d=0" -g "a=3"
+./aan_reach -s minisat -m "models/example_1.an" -i "a=0,b=0,c=0,d=0" -g "a=3"
+./aan_reach -s minisat -m "models/example_3.an" -i "a=0,b=0,c=0" -g "a=1"
+
+The following example is not reachable (provable with the bound):
+
+./aan_reach -s minisat -m "models/example_3.an" -i "a=0,b=0,c=0" -g "a=2"
+
+The next example is reachable (n states) but the bound cannot be computed:
+
+./aan_reach -s minisat -m "models/example_2.an" -i "a=0,b=0,c=0,d=0,e=0" -g "a=1"
 
 ### Documentation
 
