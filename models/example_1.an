@@ -1,5 +1,5 @@
 (**
-    exemple où une transition est empruntée plusieurs fois
+    -> a_3 is reachable from (a_0,b_0,c_0,d_0)
 **)
 
 "a" [0,1,2,3]

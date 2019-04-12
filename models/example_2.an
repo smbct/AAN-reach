@@ -1,5 +1,5 @@
 (**
-    exemple avec cycle obigatoire dans le LCG
+    -> a_1 is reachable from (a_0,b_0,c_0,d_0,e_0)
 **)
 
 "a" [0,1]

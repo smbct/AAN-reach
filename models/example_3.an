@@ -1,0 +1,19 @@
+(**
+    -> a_1 is reachable from (a_0,b_0,c_0)
+    -> a_2 is unreachable from (a_0,b_0,c_0) 
+**)
+
+"a" [0,1,2]
+"b" [0,1,2]
+"c" [0,1,2]
+
+"a" 0 -> 1 when "b"=1
+"a" 1 -> 2 when "b"=1 and "c"=1
+
+"b" 0 -> 1
+"b" 1 -> 2
+
+"c" 0 -> 1 when "a"=1 and "b"=0
+"c" 1 -> 2 when "a"=1 and "b"=0
+
+initial_context "a" = 0 , "b" = 0 , "c" = 0
