@@ -81,28 +81,47 @@ void Framework::reachability() {
       initCtx.at(autInd) = aut.stateIndex[elt.second];
     }
 
-    /* create the LCG */
+    /* Local Causality Graph (for the bound) */
     LCG::Graph lcg(model, initCtx, goal);
-    lcg.build();
+
+    if(param.bound <= 0) { /* create the LCG */
+      lcg.build();
+    }
 
     bool reachable = false;
 
-    if(lcg.checkCycle()) {
+    bool lcg_cycles;
+    if(param.bound <= 0) {
+      lcg_cycles = lcg.checkCycle();
+    }
+
+    if(param.bound <= 0 && lcg_cycles) {
 
       cout << "The Local Causality Graph contains cycles, the bound cannot be computed." << endl;
 
     } else {
 
-      unsigned int bound = lcg.computeBound();
+      unsigned int bound = -1;
 
-      cout << "Local causality bound: " << bound << " state(s)" << endl;
+      if(param.bound <= 0 && !lcg_cycles) {
+        bound = lcg.computeBound();
+        cout << "Local causality bound: " << bound << " state(s)" << endl;
+
+      } else {
+        cout << "Bound manually set to " << param.bound << endl;
+      }
+
 
       // if(param.encoding == Parameters::SAT) {
       Encoding en(model);
       if(param.debugLevel >= 1) {
         en.setVerbose(true);
       }
-      reachable = en.reachability(initCtx, finalCtx, bound);
+      if(param.bound <= 0) {
+        reachable = en.reachability(initCtx, finalCtx, bound);
+      } else {
+        reachable = en.reachability(initCtx, finalCtx, param.bound);
+      }
       // } else if(param.encoding == Parameters::ASP) {
       //   ASP aspEnc(model);
       //   reachable = aspEnc.reachability(initCtx, finalCtx, bound+1);
@@ -112,7 +131,12 @@ void Framework::reachability() {
       if(reachable) {
         cout << "reachable" << endl;
       } else {
-        cout << "unreachable" << endl;
+        if(param.bound <= 0) {
+          cout << "unreachable" << endl;
+        } else {
+          cout << "unreachable for sequences of length " << param.bound << endl;
+          cout << "Inconclusive in the general case" << endl;
+        }
       }
     }
 

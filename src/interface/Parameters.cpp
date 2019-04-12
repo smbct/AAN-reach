@@ -18,6 +18,7 @@ Parameters::Parameters() {
   encoding = SAT;
   debugLevel = 0;
   help = false;
+  bound = -1;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,6 +61,8 @@ void Parameters::loadFromCmd(int argc, char** argv) {
       }
     } else if(token == "-h") {
       help = true;
+    } else if(token == "-b") {
+      bound = stoi(argv[i+1]);
     } else {
       i --;
     }
@@ -142,6 +145,8 @@ void Parameters::display() {
 
   cout << "Debug level:\t- " << debugLevel << endl;
 
+  cout << "Bound:\t- " << bound << endl;
+
   cout << endl << endl << endl;
 
 }
@@ -167,4 +172,5 @@ void Parameters::showHelp() {
   cout << "-g : goal state, ex: \"a=2\"" << endl;
   cout << "-s : sat solver: minisat, glucose" << endl << endl;
   cout << "-d : debug information level, between 0 and 2" << endl;
+  cout << "-b : bound specified manually, > 0" << endl;
 }

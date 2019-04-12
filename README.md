@@ -1,6 +1,6 @@
 # AAN-reach
 
-AAN-reach is a reachability solver the Asynchronous Automata Network framework. This program encodes the dynamics of Asynchronous Automata Networks into a SAT instance. Then, an external SAT solver is used to look for an execution sequence that verify the reachabillity. In some cases, it is also able to prove the unreachability by computing a sufficient bound on the length of execution sequences. This bound is derived from static analysis tools.
+AAN-reach is a reachability solver the Asynchronous Automata Network framework. This program encodes the dynamics of Asynchronous Automata Networks into a SAT instance. Then, an external SAT solver is used to look for an execution sequence that verify the reachabillity. In some cases, it is also able to prove the unreachability by computing a sufficient bound on the length of execution sequences. This bound is derived from static analysis tools. For the inconclusive cases, a manual bound can be set to check reachability in bounded sequences.
 
 ## How to use it ?
 
@@ -27,6 +27,7 @@ First, make the install script executable: sudo chmod +x install.sh. Then, use t
 - -m: Automata Network model path (.an file)
 - -i: initial state, for example "a=0,b=0,c=0"
 - -g: reachability goal, for example "a=3"
+- -b: set a manual bound for the Bounded Model Checking
 - -d: debug level, between 0 and 2
 - -h: show the help
 
@@ -39,11 +40,15 @@ The two following instances are reachable:
 
 The following example is not reachable (provable with the bound):
 
-./aan_reach -s minisat -m "models/example_3.an" -i "a=0,b=0,c=0" -g "a=2"
+./aan_reach -s glucose -m "models/example_3.an" -i "a=0,b=0,c=0" -g "a=2"
 
-The next example is reachable (n states) but the bound cannot be computed:
+The next example is reachable (n states) but the local causality bound cannot be computed:
 
 ./aan_reach -s minisat -m "models/example_2.an" -i "a=0,b=0,c=0,d=0,e=0" -g "a=1"
+
+A bound can be set manually to compute a reachable sequence:
+
+./aan_reach -s minisat -m "models/example_2.an" -i "a=0,b=0,c=0,d=0,e=0" -g "a=1" -b 8
 
 ### Documentation
 

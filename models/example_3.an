@@ -1,6 +1,6 @@
 (**
-    -> a_1 is reachable from (a_0,b_0,c_0)
-    -> a_2 is unreachable from (a_0,b_0,c_0) 
+    -> a_1 is reachable from (a_0,b_0,c_0) (sequence of length 3)
+    -> a_2 is unreachable from (a_0,b_0,c_0)
 **)
 
 "a" [0,1,2]

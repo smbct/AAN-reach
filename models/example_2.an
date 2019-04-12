@@ -1,5 +1,5 @@
 (**
-    -> a_1 is reachable from (a_0,b_0,c_0,d_0,e_0)
+    -> a_1 is reachable from (a_0,b_0,c_0,d_0,e_0) with a bound equal to 8 (local causality bound not computable)
 **)
 
 "a" [0,1]
