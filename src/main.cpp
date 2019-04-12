@@ -11,23 +11,7 @@ using namespace std;
 
 /*----------------------------------------------------------------------------*/
 int main(int argc, char** argv) {
-
-    // AN network("models/ex12_cycleObl.an");
-    //
-    // Context initContext(network.nAutomata(), 0);
-    //
-    // // create initial contex with local state 0
-    // for(unsigned int ind = 0; ind < initContext.size(); ind ++) {
-    //   initContext.at(ind) = 0;
-    // }
-    //
-    // unsigned int autInd = 0;
-    // LocalState goalState(autInd,1);
-    //
-    // LCG::Graph graph(network, initContext, goalState);
-    //
-    // graph.build();
-
+  
     Parameters& param = Parameters::getParameters();
 
     param.loadFromCmd(argc, argv);

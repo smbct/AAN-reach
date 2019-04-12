@@ -1,2 +1,43 @@
-# AAN-reachability
-Reachability solving in Asynchronous Automata Networks
+# AAN-reach
+
+AAN-reach is a reachability solver the Asynchronous Automata Network framework. This program encodes the dynamics of Asynchronous Automata Networks into a SAT instance. Then, an external SAT solver is used to look for an execution sequence that verify the reachabillity. In some cases, it is also able to prove the unreachability by computing a sufficient bound on the length of execution sequences. This bound is derived from static analysis tools.
+
+## How to use it ?
+
+### Installation
+
+curl is needed.
+
+### List of parameters
+
+- -s: SAT solver used, minisat or glucose
+- -m: Automata Network model path (.an file)
+- -i: initial state, for example "a=0,b=0,c=0"
+- -g: reachability goal, for example "a=3"
+
+### Example
+
+./aan_reach -e SAT -m "models/ex7_rep.an" -i "a=0,b=0,c=0,d=0" -g "a=3"
+
+
+## Asynchronous Automata Network
+
+Asynchronous Automata Networks is a modeling framework used to represent dynamic systems, such as biological regulatory networks. These models are composed by several automata. Each automaton has several local states and transitions between these local states. The set of (global) states of the model is the cross product of all the local states of the automata. Transitions are also labeled by some local states. A transition can be played from a (global state) if the local states of the transition are present in this state. The Asynchronicity means that from one global state, only one transition can be played.
+
+![An Automata Network](AN.png)
+
+The Automata Network above contains 3 automata with 3 local states for each. (a_1,b_1,c_2) is a global state from which the transition a_1 -> a_2 (b_1, c_2) can be played. The resulting state after playing the transition is (a_2,b_1,c_2).
+
+## Reachability problem
+
+In this framework, the reachability problem is the following question : given an initial global state, is there an execution sequence that leads to a global state with a specific local state ?
+
+For example, in the previous example, the reachability of a_2 from (a_0,b_0,c_0) is possible. Indeed, this local state can be reached after successively playing the transitions : b_0 -> b_1 ; c_0 -> c_2 ; b_1 -> b_2 ; a_0 -> a_1 ; b_2 -> b_1 ; a_1 -> a_2
+
+## Solving reachability through Bounded Model Checking and static analysis
+
+To solve reachability, the program encodes the dynamics of Asynchronous Automata Networks into a propositional logic formula, which is then solved by a SAT solver. The encoding represent an execution sequence of the model. Thus, it is necessary to set the length of the bound.
+
+If the reachability can be done with the chosen length, the SAT solver returns a corresponding reachability sequence. If not, this gives an unreachability proof only for the chosen length. To prove unreachability in the general case, it is necessary to prove that the rechability is not possible even with longer sequences.
+
+The approach used in this program comes from the static analysis tools employed in the solver [Pint](https://loicpauleve.name/pint/). A graph is build to compute a reachability bound. Unfortunately, this bound cannot be computed for every reachability instance.

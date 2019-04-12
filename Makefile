@@ -9,16 +9,19 @@ CPPFLAGS = -Wall -O3 -pedantic -Wfatal-errors -Wconversion -Wredundant-decls -Ws
 CXXFLAGS := -std=c++11
 .PHONY = clean
 
-all: main
+all: aan_reach
 
-run: main
-	./main
+run: aan_reach
+	./aan_reach
 
-main: $(OBJ_FILES)
-	$(CXX) $(LDFLAGS) -o $@ $^
+#main: $(OBJ_FILES)
+#	$(CXX) $(LDFLAGS) -o $@ $^
+
+aan_reach: $(OBJ_FILES)
+	$(CXX) $(LDFLAGS) -o aan_reach $^
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c -o $@ $<
 
 clean:
-	rm obj/*/*.o obj/*.o ./main
+	rm obj/*/*.o obj/*.o ./aan_reach
