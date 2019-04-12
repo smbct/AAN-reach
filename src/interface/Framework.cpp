@@ -30,7 +30,14 @@ Framework::Framework() {
 /*----------------------------------------------------------------------------*/
 void Framework::exec() {
 
-  reachability();
+  Parameters& param = Parameters::getParameters();
+
+
+  if(param.help) { /* show the help */
+    param.showHelp();
+  } else { /* lunch the reachability solver */
+    reachability();
+  }
 
 }
 
@@ -52,6 +59,7 @@ void Framework::reachability() {
       cout << "error, no time to implement this feature" << endl;
       exit(0);
     }
+
 
 
     /* identification of the goal state */
@@ -85,7 +93,7 @@ void Framework::reachability() {
 
     if(lcg.checkCycle()) {
 
-      cout << "Error, the LCG contains cycles, the bound cannot ve computed." << endl;
+      cout << "The Local Causality Graph contains cycles, the bound cannot be computed." << endl;
 
     } else {
 
@@ -93,18 +101,18 @@ void Framework::reachability() {
 
       cout << "bound computed: " << bound << " states" << endl;
 
-      /* heuristic bound = number of transitions in the lcg */
-      if(param.encoding == Parameters::SAT) {
-        Encoding en(model);
-        if(param.debugLevel >= 1) {
-          en.setVerbose(true);
-        }
-        reachable = en.reachability(initCtx, finalCtx, bound+1);
-      } else if(param.encoding == Parameters::ASP) {
-        ASP aspEnc(model);
-        reachable = aspEnc.reachability(initCtx, finalCtx, bound+1);
+      // if(param.encoding == Parameters::SAT) {
+      Encoding en(model);
+      if(param.debugLevel >= 1) {
+        en.setVerbose(true);
       }
+      reachable = en.reachability(initCtx, finalCtx, bound+1);
+      // } else if(param.encoding == Parameters::ASP) {
+      //   ASP aspEnc(model);
+      //   reachable = aspEnc.reachability(initCtx, finalCtx, bound+1);
+      // }
 
+      cout << endl << "Result: ";
       if(reachable) {
         cout << "reachable" << endl;
       } else {

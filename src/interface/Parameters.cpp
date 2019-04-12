@@ -15,8 +15,9 @@ using namespace std;
 /*----------------------------------------------------------------------------*/
 Parameters::Parameters() {
   solver = minisat;
-  encoding = undefined;
+  encoding = SAT;
   debugLevel = 0;
+  help = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -59,6 +60,8 @@ void Parameters::loadFromCmd(int argc, char** argv) {
       } else if(string(argv[i+1]) == "ccanr") {
         solver = ccanr;
       }
+    } else if(token == "-h") {
+      help = true;
     } else {
       i --;
     }
@@ -147,10 +150,22 @@ void Parameters::display() {
 
 /*----------------------------------------------------------------------------*/
 void Parameters::showHelp() {
-  cout << "Command line usage: " << endl << endl;
+
+  cout << "*****************************************************************" << endl;
+  cout << "*************************** AAN-reach ***************************"  << endl;
+  cout << "*********Reachability in Asynchronous Automata Network***********" << endl;
+  cout << "*****************************************************************" << endl;
+
+  cout << endl << "Command line usage: " << endl << endl;
+
+  cout << "./aan_reach -m model.an -i initial_state -g goal_state -s SAT_solver " << endl << endl;
+
+  cout << "Parameters: " << endl << endl;
+
   cout << "-m : input automata network model" << endl;
-  cout << "-e : encoding : SAT or ASP" << endl;
+  cout << "-h : show this help" << endl;
+  // cout << "-e : encoding : SAT or ASP" << endl;
   cout << "-i : initial local state, ex: \"a=0, b=1, c=0\"" << endl;
-  cout << "-g : goal state, ex: \"a=2,b=1\"" << endl << endl;
-  cout << "-s : sat solver: minisat, glucose, maplecomsps, ccanr" << endl << endl;
+  cout << "-g : goal state, ex: \"a=2\"" << endl;
+  cout << "-s : sat solver: minisat, glucose" << endl << endl;
 }

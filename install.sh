@@ -29,7 +29,7 @@ cd glucose-syrup-4.1/simp
 make rs
 
 echo "........................."
-echo "Compiling aan_reach"
+echo "Compiling AAN-reach"
 echo "........................."
 
 cd ../../..

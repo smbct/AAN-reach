@@ -49,6 +49,11 @@ class Parameters {
      */
     void loadFromCmd(int argc, char** argv);
 
+    /*
+     * \brief show the help
+     */
+    void showHelp();
+
   public:
 
     Encoding encoding; /* the encoding: SAT or ASP */
@@ -57,6 +62,7 @@ class Parameters {
     StrContext initialState; /* the initial state of the rechability problem */
     StrContext goal; /* the goal of the rechability problem */
     int debugLevel; /* level for debuging information */
+    bool help; /* show the help */
 
   private:
 
@@ -72,10 +78,6 @@ class Parameters {
      */
     static void extractContext(std::string token, StrContext& ctx);
 
-    /*
-     * \brief show the help
-     */
-    void showHelp();
 
 };
 
