@@ -14,6 +14,9 @@ all: aan_reach
 run: aan_reach
 	./aan_reach -h
 
+test: aan_reach
+	./aan_reach -s minisat -m "models/example_1.an" -i "a=0,b=0,c=0,d=0" -g "a=3"
+
 #main: $(OBJ_FILES)
 #	$(CXX) $(LDFLAGS) -o $@ $^
 

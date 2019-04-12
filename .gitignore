@@ -33,3 +33,6 @@
 
 # SAT Solvers
 solver/*
+
+# doxygen documentation
+doc/*

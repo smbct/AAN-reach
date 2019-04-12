@@ -35,24 +35,26 @@ First, make the install script executable: sudo chmod +x install.sh. Then, use t
 
 The two following instances are reachable:
 
-./aan_reach -s minisat -m "models/example_1.an" -i "a=0,b=0,c=0,d=0" -g "a=3"
-./aan_reach -s minisat -m "models/example_3.an" -i "a=0,b=0,c=0" -g "a=1"
+- ./aan_reach -s minisat -m "models/example_1.an" -i "a=0,b=0,c=0,d=0" -g "a=3"
+- ./aan_reach -s minisat -m "models/example_3.an" -i "a=0,b=0,c=0" -g "a=1"
 
 The following example is not reachable (provable with the bound):
 
-./aan_reach -s glucose -m "models/example_3.an" -i "a=0,b=0,c=0" -g "a=2"
+- ./aan_reach -s glucose -m "models/example_3.an" -i "a=0,b=0,c=0" -g "a=2"
 
 The next example is reachable (n states) but the local causality bound cannot be computed:
 
-./aan_reach -s minisat -m "models/example_2.an" -i "a=0,b=0,c=0,d=0,e=0" -g "a=1"
+- ./aan_reach -s minisat -m "models/example_2.an" -i "a=0,b=0,c=0,d=0,e=0" -g "a=1"
 
 A bound can be set manually to compute a reachable sequence:
 
-./aan_reach -s minisat -m "models/example_2.an" -i "a=0,b=0,c=0,d=0,e=0" -g "a=1" -b 8
+- ./aan_reach -s minisat -m "models/example_2.an" -i "a=0,b=0,c=0,d=0,e=0" -g "a=1" -b 8
 
 ### Documentation
 
 A documentation of the source code can be generated thanks to [Doxygen](http://doxygen.nl/). To generate the documentation, Doxygen must be installed. Then, use the command: doxygen Doxyfile
+
+The documentation is generated in html, in the doc directory. It con be visualized by opening the file index.html in a web browser.  
 
 ## Asynchronous Automata Network
 
