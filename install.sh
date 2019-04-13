@@ -35,4 +35,12 @@ echo "Compiling AAN-reach"
 echo "........................."
 
 cd ../../..
+mkdir obj
+mkdir obj/asp
+mkdir obj/encoding
+mkdir obj/interface
+mkdir obj/lcg
+mkdir obj/logic
+mkdir obj/model
+
 make aan_reach
