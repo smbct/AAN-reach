@@ -19,7 +19,7 @@ These solvers are installed automatically with the installing script. However, y
 
 ### Installation
 
-First, make the install script executable: sudo chmod +x install.sh. Then, use the command: ./install to download the SAT solvers and compile the program.
+First, make the install script executable: sudo chmod +x install.sh. Then, use the command: ./install.sh to download the SAT solvers and compile the program.
 
 ### List of parameters
 
