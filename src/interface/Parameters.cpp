@@ -19,6 +19,7 @@ Parameters::Parameters() {
   debugLevel = 0;
   help = false;
   bound = -1;
+  k_induction = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -61,8 +62,12 @@ void Parameters::loadFromCmd(int argc, char** argv) {
       }
     } else if(token == "-h") {
       help = true;
+      i --;
     } else if(token == "-b") {
       bound = stoi(argv[i+1]);
+    } else if(token == "-k_induction") {
+      k_induction = true;
+      i --;
     } else {
       i --;
     }
@@ -147,6 +152,8 @@ void Parameters::display() {
 
   cout << "Bound:\t- " << bound << endl;
 
+  cout << "k-induction:\t- " << k_induction << endl;
+
   cout << endl << endl << endl;
 
 }
@@ -172,5 +179,7 @@ void Parameters::showHelp() {
   cout << "-g : goal state, ex: \"a=2\"" << endl;
   cout << "-s : sat solver: minisat, glucose" << endl << endl;
   cout << "-d : debug information level, between 0 and 2" << endl;
-  cout << "-b : bound specified manually, > 0" << endl;
+  cout << "-b : bound specified manually, > 1" << endl;
+  cout << "-k_induction : apply the k-induction technique, a bound has to be specified" << endl;
+
 }

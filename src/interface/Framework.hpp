@@ -49,6 +49,11 @@ class Framework {
      */
     void reachability();
 
+    /*!
+     * \brief try to compute a bound through k-induction
+     */
+    void k_induction();
+
 };
 
 #endif

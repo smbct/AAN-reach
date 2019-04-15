@@ -40,6 +40,14 @@ class Encoding {
         bool reachability(Context& initCtx, Context& finalCtx, int length);
 
         /*!
+         * \brief apply the k-induction techniques to look for a bound
+         * \param finalCtx the final context
+         * \param length the length of the unconstrained path encoded
+         * \return true if the final context is reachable from the initial context
+         */
+        bool k_induction(Context& finalCtx, int length);
+
+        /*!
          * \brief change the verbose variable
          * \param activate true if verbose will be activated
          */
@@ -71,6 +79,14 @@ class Encoding {
          * \param stateVar the variables of the global state
          */
         void activateState(StateVar& stateVar);
+
+        /*!
+         * \brief force a local state to be disabled
+         * \param stateVar the variables of the global state
+         * \param autInd the automata index
+         * \param stateInd the state index
+         */
+        void disableState(StateVar& stateVar, int autInd, int stateInd);
 
         /*!
          * \brief avoid conflict between the local states

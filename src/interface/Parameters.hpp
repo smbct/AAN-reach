@@ -64,6 +64,7 @@ class Parameters {
     int debugLevel; /* level for debuging information */
     bool help; /* show the help */
     int bound; /* bound of the reachability sequence */
+    bool k_induction; /* apply k-induction technique */
 
   private:
 

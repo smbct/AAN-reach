@@ -29,6 +29,7 @@ First, make the install script executable: sudo chmod +x install.sh. Then, use t
 - -g: reachability goal, for example "a=3"
 - -b: set a manual bound for the Bounded Model Checking
 - -d: debug level, between 0 and 2
+- -k_induction: apply k-induction technique to look for a bound, -b has to be specified
 - -h: show the help
 
 ### Examples
@@ -49,6 +50,21 @@ The next example is reachable (n states) but the local causality bound cannot be
 A bound can be set manually to compute a reachable sequence:
 
 - ./aan_reach -s minisat -m "models/example_2.an" -i "a=0,b=0,c=0,d=0,e=0" -g "a=1" -b 8
+
+The k-induction technique can also be used to compute a bound to make unreachability proofs (see below). You can use the option "-k_induction" to check if a length can be used as a completeness bound. The bound option "-b" has to be used at the same time.
+
+The first example is a random Automata Network with 10 automata. The next two lines show two length, the second one is enough to be used as a bound, proved by the k-induction technique.
+
+- ./aan_reach -s glucose -m "models/random_10.an" -i "0=0, 1=0, 2=1, 3=1, 4=0, 5=1, 6=0, 7=1, 8=0, 9=0" -g "1=1" -b 8 -k_induction
+- ./aan_reach -s glucose -m "models/random_10.an" -i "0=0, 1=0, 2=1, 3=1, 4=0, 5=1, 6=0, 7=1, 8=0, 9=0" -g "1=1" -b 10 -k_induction
+
+We can see here that the reachability is possible and the local causality bound can be computed:
+
+./aan_reach -s glucose -m "models/random_10.an" -i "0=0, 1=0, 2=1, 3=1, 4=0, 5=1, 6=0, 7=1, 8=0, 9=0" -g "1=1"
+
+The next instance is not reachable, once again, the local causality bound can be computed. In this example, the k-induction gives:
+
+./aan_reach -s glucose -m "models/random_10.an" -i "0=1, 1=0, 2=0, 3=1, 4=0, 5=0, 6=0, 7=1, 8=0, 9=1" -g "8=1" -b 12 -k_induction
 
 ### Documentation
 
@@ -77,3 +93,63 @@ To solve reachability, the program encodes the dynamics of Asynchronous Automata
 If the reachability can be done with the chosen length, the SAT solver returns a corresponding reachability sequence. If not, this gives an unreachability proof only for the chosen length. To prove unreachability in the general case, it is necessary to prove that the rechability is not possible even with longer sequences.
 
 The approach used in this program comes from the static analysis tools employed in the solver [Pint](https://loicpauleve.name/pint/). A graph is build to compute a reachability bound. Unfortunately, this bound cannot be computed for every reachability instance.
+
+## Bounded Model Checking completeness bounds
+
+Other bounds for complete Bounded Model Checking, more especially for Bounded Model Checking, can be derived directly from satisfiability solving. For example, the k-induction technique can be used for such a bound. The idea is to compute the longest shortest path from any state to the goal state. If the solver returns UNSAT, it means that the initial reachability problem cannot be solved either (there is no longer path from any state to the goal state)
+
+Several examples to compare k-induction with local causality bound (when it is possible) are provided:
+
+Random Automata Network of size 10:
+  - Initial state: 0=1, 1=0, 2=0, 3=1, 4=0, 5=0, 6=0, 7=1, 8=0, 9=1
+  - Goal state: 8=1
+  - Reachability: No
+  - Local causality bound: 6
+  - k-Induction bound: 12
+
+
+  - Initial state: 0=0, 1=0, 2=1, 3=1, 4=0, 5=1, 6=0, 7=1, 8=0, 9=0
+  - Goal state: 1=1
+  - Reachability: Yes
+  - Local causality bound: 3
+  - k-Induction bound: 10
+
+
+Random Automata Network of size 15:
+  - Initial state: 0=0, 1=0, 2=1, 3=1, 4=0, 5=1, 6=0, 7=0, 8=0, 9=1, 10=1, 11=1, 12=0, 13=0, 14=1
+  - Goal state: 14=0
+  - Reachability: No
+  - Local causality bound: 6
+  - k-Induction bound: 16
+
+
+  - Initial state: 0=1, 1=1, 2=0, 3=0, 4=1, 5=0, 6=0, 7=0, 8=0, 9=1, 10=1, 11=0, 12=1, 13=1, 14=1
+  - Goal state: 14=0
+  - Reachability: Yes
+  - Local causality bound: 7
+  - k-Induction bound: 21
+
+
+Random Automata Network of size 20:
+
+  - Initial state: 0=0, 1=0, 2=1, 3=1, 4=0, 5=1, 6=0, 7=1, 8=0, 9=0, 10=0, 11=1, 12=1, 13=1, 14=1, 15=0, 16=0, 17=0, 18=0, 19=0
+  - Goal state: 4=1
+  - Reachability: No
+  - Local causality bound: 14
+  - k-Induction bound: 32
+
+
+  - Initial state:  0=0, 1=1, 2=1, 3=1, 4=1, 5=1, 6=0, 7=0, 8=0, 9=0, 10=0, 11=0, 12=1, 13=1, 14=1, 15=0, 16=0, 17=0, 18=0, 19=0
+  goal: 10=0
+  - Goal state: 11=1
+  - Reachability: Yes
+  - Local causality bound: 15
+  - k-Induction bound: 48
+
+
+  - Initial state:  0=1, 1=0, 2=1, 3=0, 4=0, 5=0, 6=0, 7=0, 8=0, 9=1, 10=1, 11=0, 12=1, 13=0, 14=1, 15=1, 16=1, 17=0, 18=0, 19=1
+  goal: 10=0
+  - Goal state: 10=0
+  - Reachability: Yes
+  - Local causality bound: 12
+  - k-Induction bound: 32
