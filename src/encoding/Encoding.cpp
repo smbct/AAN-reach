@@ -200,6 +200,11 @@ AndOp* Encoding::noChange(int k, int autInd) {
 }
 
 /*----------------------------------------------------------------------------*/
+void Encoding::disableState(StateVar& stateVar, int autInd, int stateInd) {
+  _termList.push_back(new NotOp(stateVar.at(autInd).at(stateInd)));
+}
+
+/*----------------------------------------------------------------------------*/
 bool Encoding::reachability(Context& initCtx, Context& finalCtx, int length) {
 
     Parameters& param = Parameters::getParameters();
@@ -326,6 +331,151 @@ bool Encoding::reachability(Context& initCtx, Context& finalCtx, int length) {
     return res;
 }
 
+/*----------------------------------------------------------------------------*/
+bool Encoding::k_induction(Context& finalCtx, int length) {
+
+  Parameters& param = Parameters::getParameters();
+
+  if(param.debugLevel > 0) {
+    cout << "create logical variables" << endl;
+  }
+
+  createPathVariables(length);
+
+  if(param.debugLevel > 0) {
+    cout << "init the noChange vector" << endl;
+  }
+  _noChange.resize(length, vector<AndOp*>(_an.nAutomata(), nullptr));
+
+  if(param.debugLevel > 0) {
+    cout << "set final goal" << endl;
+  }
+
+  setContext(_variables.at(length-1), finalCtx);
+
+  if(param.debugLevel > 0) {
+    cout << "disable goal in other states" << endl;
+  }
+  
+  unsigned int autGoal = -1;
+  unsigned int stateGoal = -1;
+
+  for(unsigned int i = 0; i < finalCtx.size(); i ++) {
+    if(finalCtx.at(i) != -1) {
+      autGoal = i;
+      stateGoal = finalCtx.at(i);
+    }
+  }
+
+  /* the goal state should be not active for all other states */
+  for(int k = 0; k < length-2; k++) {
+    disableState(_variables.at(k), autGoal, stateGoal);
+  }
+
+  if(param.debugLevel > 0) {
+    cout << "activate states" << endl;
+  }
+  for(int k = 0; k < length; k++) {
+      activateState(_variables.at(k));
+  }
+
+  if(param.debugLevel > 0) {
+    cout << "create transitions" << endl;
+  }
+  for(int k = 0; k < length-1; k ++) {
+      createTransition(_variables.at(k), _variables.at(k+1), k+1);
+  }
+
+  if(param.debugLevel > 0) {
+    cout << "alldiff constraint" << endl;
+  }
+  allDiff(_variables);
+
+  if(param.debugLevel > 0) {
+    cout << "avoid conflict csontraint" << endl;
+  }
+  avoidConflict(_variables.at(0));
+
+  if(param.debugLevel > 0) {
+    cout << "settle main term" << endl;
+  }
+
+  _ex.setMainTerm(new AndOp(_termList));
+
+  vector<cnf::Variable*> cnfVar;
+
+  cnf::CnfExpression cnfEx;
+
+  if(param.debugLevel > 0) {
+    cout << "convert to cnf" << endl;
+  }
+  _ex.toCnf(cnfEx, cnfVar);
+  cnfEx.exportDimacs("temp.dm");
+
+  if(param.debugLevel > 0) {
+    cout << "nVar : " << cnfEx.nVar() << endl;
+    cout << "nClause : " << cnfEx.nClause() << endl;
+
+    cout << "sat solver lunched" << endl;
+  }
+
+  /* command for calling SAT solver */
+  string cmd;
+
+  // if(param.solver == Parameters::glucose) {
+  //   cmd = "./solver/glucose-syrup-4.1/simp/glucose_static";
+  // } else if(param.solver == Parameters::minisat) {
+  //   cmd = "./solver/minisat/core/minisat_static";
+  // } else if(param.solver == Parameters::ccanr) {
+  //   cmd = "./solver/CCAnr_2_cai_source_code/CCAnr";
+  // } else { /* minisat anyway */
+  //   cmd = "./solver/minisat/core/minisat_static";
+  // }
+
+  /* solver choice */
+  if(param.solver == Parameters::glucose) {
+    cmd = "./solver/glucose-syrup-4.1/simp/glucose_static";
+  } else { /* minisat anyway */
+    cmd = "./solver/minisat/core/minisat";
+  }
+
+  // cmd += " -cpu-lim=1";
+  // cmd += " --help";
+
+  if(param.solver != Parameters::ccanr) {
+    if(param.debugLevel < 2) {
+      cmd += " -verb=0";
+    }
+  }
+
+  if(param.solver == Parameters::ccanr) {
+    cmd += " -inst";
+  }
+
+  cmd += " temp.dm";
+
+  if(param.solver != Parameters::ccanr) {
+    cmd += " res";
+  }
+
+  system(cmd.c_str());
+  // int res = system("./../solver/minisat/simp/minisat_static test/test.dm test/res");
+
+  /* glucose */
+  // int res = system("./../solver/glucose-syrup-4.1/simp/glucose_static test/test.dm test/res");
+
+  bool res = extractSolution(_variables, cnfVar, length);
+
+  if(param.debugLevel > 0) {
+    cout << "sat solving done : " << res << endl;
+  }
+
+  system("rm res");
+  system("rm temp.dm");
+
+  return res;
+
+}
 
 /*----------------------------------------------------------------------------*/
 bool Encoding::extractSolution(vector<StateVar>& stateVar, vector<cnf::Variable*>& cnfVar, int length) {

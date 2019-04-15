@@ -35,7 +35,11 @@ void Framework::exec() {
   if(param.help) { /* show the help */
     param.showHelp();
   } else { /* lunch the reachability solver */
-    reachability();
+    if(param.k_induction) {
+      k_induction();
+    } else {
+      reachability();
+    }
   }
 
 }
@@ -55,7 +59,7 @@ void Framework::reachability() {
 
     /* extract goal */
     if(param.goal.size() != 1) {
-      cout << "error, no time to implement this feature" << endl;
+      cout << "error, this feature is not implemented" << endl;
       exit(0);
     }
 
@@ -142,5 +146,64 @@ void Framework::reachability() {
 
 
   }
+
+}
+
+/*----------------------------------------------------------------------------*/
+void Framework::k_induction() {
+
+  Parameters& param = Parameters::getParameters();
+
+  if(param.debugLevel > 1) {
+    param.display();
+  }
+
+
+    AN model(param.model);
+
+    /* extract goal */
+    if(param.goal.size() != 1) {
+      cout << "error, no time to implement this feature" << endl;
+      exit(0);
+    }
+
+    /* identification of the goal state */
+    LocalState goal;
+    {
+      auto it = param.goal.begin();
+      int autInd = model.getAutomatonIndex(it->first);
+      auto automaton = model.getAutomaton(autInd);
+      goal.automaton = autInd;
+      goal.state = automaton.stateIndex[it->second];
+    }
+
+    /* creation of the final context */
+    Context finalCtx(model.nAutomata(),-1);
+    finalCtx.at(goal.automaton) = goal.state;
+
+
+    bool satisfiable = false;
+
+    // if(param.encoding == Parameters::SAT) {
+    Encoding en(model);
+    if(param.debugLevel >= 1) {
+      en.setVerbose(true);
+    }
+
+    cout << "bound: " << param.bound << endl;
+
+    if(param.bound >= 2) {
+      satisfiable = en.k_induction(finalCtx, param.bound);
+      cout << endl << "Result: the length ";
+      if(satisfiable) {
+        cout << param.bound << " may not be a completeness bound for that instance" << endl;
+      } else {
+        cout << param.bound << " is a completeness bound for that instance" << endl;
+      }
+    } else {
+      cout << "Error, the bound has not been set correctly" << endl;
+    }
+
+
 
 }
