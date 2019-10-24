@@ -92,7 +92,7 @@ To solve reachability, the program encodes the dynamics of Asynchronous Automata
 
 If the reachability can be done with the chosen length, the SAT solver returns a corresponding reachability sequence. If not, this gives an unreachability proof only for the chosen length. To prove unreachability in the general case, it is necessary to prove that the rechability is not possible even with longer sequences.
 
-The approach used in this program comes from the static analysis tools employed in the solver [Pint](https://loicpauleve.name/pint/). A graph is build to compute a reachability bound. Unfortunately, this bound cannot be computed for every reachability instance.
+The approach used in this program comes from the static analysis tools employed in the solver [Pint](https://loicpauleve.name/pint/). A graph is built to compute a reachability bound. Unfortunately, this bound cannot be computed for every reachability instance.
 
 ## Bounded Model Checking completeness bounds
 
