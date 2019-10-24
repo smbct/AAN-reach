@@ -24,9 +24,9 @@ echo "Installing glucose"
 echo "........................."
 
 cd ../..
-curl -sS http://www.labri.fr/perso/lsimon/downloads/softwares/glucose-syrup-4.1.tgz > glucose.tar.gz
-tar -xvzf glucose.tar.gz
-rm glucose.tar.gz
+curl -sS https://www.labri.fr/perso/lsimon/downloads/softwares/glucose-syrup-4.1.tgz > glucose.tgz
+tar -xvzf glucose.tgz
+rm glucose.tgz
 cd glucose-syrup-4.1/simp
 make rs
 
